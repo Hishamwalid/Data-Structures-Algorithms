@@ -71,7 +71,7 @@
         
         .algorithms-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(2, 1fr); /* Two equal columns */
             gap: 25px;
             margin-top: 40px;
         }
@@ -149,9 +149,9 @@
             border-top: 1px solid rgba(255, 255, 255, 0.2);
         }
         
-        @media (max-width: 768px) {
+        @media (max-width: 900px) {
             .algorithms-grid {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                grid-template-columns: 1fr; /* Single column on smaller screens */
             }
         }
         
@@ -208,7 +208,7 @@
                 </div>
                 <div class="card-content">
                     <p>A variation of merge sort that divides the list into two equal parts, recursively sorts them, and then merges.</p>
-                    <a href="#" class="card-button">Visualize 2-Way Merge Sort</a>
+                    <a href="#" class="card-button">Coming Soon</a>
                 </div>
             </div>
             
@@ -293,7 +293,7 @@
             });
         });
 
-        // Improved grayscale scroll effect
+        // Improved grayscale scroll effect with darker transition
         let ticking = false;
         let currentGrayValue = 0;
         
@@ -308,8 +308,8 @@
             // Update progress bar
             document.querySelector('.scroll-progress-bar').style.width = `${scrollPercentage * 100}%`;
             
-            // Calculate target gray value (0 to 200 for a grayish look)
-            const targetGrayValue = Math.floor(scrollPercentage * 200);
+            // Calculate target gray value (0 to 120 for a darker transition)
+            const targetGrayValue = Math.floor(scrollPercentage * 120);
             
             // Set the gray value directly without smoothing for immediate response
             currentGrayValue = targetGrayValue;
@@ -317,7 +317,7 @@
             document.body.style.backgroundColor = `rgb(${currentGrayValue}, ${currentGrayValue}, ${currentGrayValue})`;
             
             // Adjust text color for better contrast
-            if (currentGrayValue > 100) {
+            if (currentGrayValue > 60) {
                 document.body.style.color = '#000';
                 document.querySelector('.search-box input').style.color = '#000';
                 document.querySelector('.search-box input').style.backgroundColor = 'rgba(0, 0, 0, 0.1)';
