@@ -294,7 +294,6 @@
         });
 
         // Improved grayscale scroll effect
-        let lastScrollY = window.scrollY;
         let ticking = false;
         let currentGrayValue = 0;
         
@@ -309,15 +308,11 @@
             // Update progress bar
             document.querySelector('.scroll-progress-bar').style.width = `${scrollPercentage * 100}%`;
             
-            // Calculate target gray value (0 to 200 for a grayish look, not pure white)
+            // Calculate target gray value (0 to 200 for a grayish look)
             const targetGrayValue = Math.floor(scrollPercentage * 200);
             
-            // Smoothly transition to the target gray value
-            if (Math.abs(targetGrayValue - currentGrayValue) > 1) {
-                currentGrayValue += (targetGrayValue - currentGrayValue) * 0.1;
-            } else {
-                currentGrayValue = targetGrayValue;
-            }
+            // Set the gray value directly without smoothing for immediate response
+            currentGrayValue = targetGrayValue;
             
             document.body.style.backgroundColor = `rgb(${currentGrayValue}, ${currentGrayValue}, ${currentGrayValue})`;
             
@@ -327,11 +322,21 @@
                 document.querySelector('.search-box input').style.color = '#000';
                 document.querySelector('.search-box input').style.backgroundColor = 'rgba(0, 0, 0, 0.1)';
                 document.querySelector('.search-box input').style.borderColor = 'rgba(0, 0, 0, 0.3)';
+                
+                // Update all text elements for better contrast
+                document.querySelectorAll('h1, h3, p, .card-button').forEach(el => {
+                    el.style.color = '#000';
+                });
             } else {
                 document.body.style.color = '#fff';
                 document.querySelector('.search-box input').style.color = '#fff';
                 document.querySelector('.search-box input').style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
                 document.querySelector('.search-box input').style.borderColor = 'rgba(255, 255, 255, 0.3)';
+                
+                // Update all text elements for better contrast
+                document.querySelectorAll('h1, h3, p, .card-button').forEach(el => {
+                    el.style.color = '#fff';
+                });
             }
             
             ticking = false;
@@ -345,19 +350,14 @@
         }
         
         window.addEventListener('scroll', function() {
-            lastScrollY = window.scrollY;
             requestTick();
         });
         
         // Initialize on load
         window.addEventListener('load', function() {
-            // Set initial gray value
             currentGrayValue = 0;
             updateColors();
         });
-        
-        // Add a small delay after load to ensure everything is rendered
-        setTimeout(updateColors, 100);
     </script>
 </body>
 </html>
