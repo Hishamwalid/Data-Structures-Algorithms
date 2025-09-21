@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Merge Sort Visualization</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: #000;
+            color: #f0f0f0;
+            min-height: 100vh;
+            padding: 20px;
+            transition: background 0.3s ease;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 30px;
+            background: rgba(30, 30, 30, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #333;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            color: #fff;
+            text-shadow: 0 1px 3px rgba(255, 255, 255, 0.1);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            margin-bottom: 20px;
+            color: #ccc;
+        }
+        
+        .array-display {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .array-element {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #222;
+            color: #fff;
+            margin: 5px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 5px rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+            border: 1px solid #444;
+        }
+        
+        .array-element:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(255, 255, 255, 0.1);
+            background: #333;
+        }
+        
+        .content {
+            margin-bottom: 30px;
+        }
+        
+        .panel {
+            width: 100%;
+            background: rgba(30, 30, 30, 0.8);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.05);
+            border: 1px solid #333;
+            margin-bottom: 30px;
+        }
+        
+        h2 {
+            margin-bottom: 20px;
+            color: #fff;
+            border-bottom: 2px solid #444;
+            padding-bottom: 10px;
+        }
+        
+        h3 {
+            margin: 15px 0;
+            color: #fff;
+        }
+        
+        .tree {
+            line-height: 1.8;
+            font-family: monospace;
+            white-space: pre;
+            overflow-x: auto;
+            padding: 20px;
+            background: #1a1a1a;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #ccc;
+            box-shadow: inset 0 2px 5px rgba(255, 255, 255, 0.03);
+            border: 1px solid #333;
+        }
+        
+        .merge-step {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #1a1a1a;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(255, 255, 255, 0.05);
+            border-left: 4px solid #444;
+            transition: all 0.3s ease;
+        }
+        
+        .merge-step:hover {
+            box-shadow: 0 5px 10px rgba(255, 255, 255, 0.08);
+            border-left-color: #666;
+        }
+        
+        .merge-header {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+        }
+        
+        .merge-header::before {
+            content: "⇊";
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .array-container {
+            display: flex;
+            margin: 10px 0;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .array {
+            display: flex;
+            margin: 0 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .array-element-sm {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #222;
+            color: #fff;
+            margin: 2px;
+            border-radius: 3px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            box-shadow: 0 1px 3px rgba(255, 255, 255, 0.05);
+            border: 1px solid #333;
+        }
+        
+        .arrow {
+            margin: 0 15px;
+            color: #aaa;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .code-block {
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin-bottom: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            box-shadow: inset 0 2px 5px rgba(255, 255, 255, 0.03);
+            color: #ccc;
+            border: 1px solid #333;
+        }
+        
+        .call-stack-container {
+            margin-top: 20px;
+            padding: 20px;
+            background: #1a1a1a;
+            border-radius: 10px;
+            box-shadow: inset 0 2px 5px rgba(255, 255, 255, 0.03);
+            border: 1px solid #333;
+        }
+        
+        .call-stack {
+            position: relative;
+            min-height: 400px;
+            border-left: 3px solid #444;
+            border-bottom: 3px solid #444;
+            padding: 15px;
+            margin-top: 30px;
+        }
+        
+        .stack-title {
+            position: absolute;
+            top: -30px;
+            left: 0;
+            font-weight: bold;
+            color: #fff;
+        }
+        
+        .stack-item {
+            padding: 12px 15px;
+            margin: 10px 0;
+            background: #222;
+            border-radius: 5px;
+            border-left: 4px solid #666;
+            font-family: monospace;
+            color: #fff;
+            box-shadow: 0 2px 5px rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            width: 95%;
+            margin-left: 5%;
+        }
+        
+        .stack-item::before {
+            content: "";
+            position: absolute;
+            left: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 15px;
+            height: 2px;
+            background: #444;
+        }
+        
+        .stack-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 10px rgba(255, 255, 255, 0.1);
+            border-left-color: #888;
+        }
+        
+        .stack-depth-0 { margin-left: 0%; width: 100%; }
+        .stack-depth-1 { margin-left: 5%; width: 95%; }
+        .stack-depth-2 { margin-left: 10%; width: 90%; }
+        .stack-depth-3 { margin-left: 15%; width: 85%; }
+        .stack-depth-4 { margin-left: 20%; width: 80%; }
+        
+        .complexity {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            text-align: center;
+            flex-wrap: wrap;
+        }
+        
+        .complexity-item {
+            padding: 20px;
+            background: #1a1a1a;
+            border-radius: 10px;
+            flex: 1;
+            margin: 10px;
+            min-width: 150px;
+            box-shadow: 0 2px 5px rgba(255, 255, 255, 0.05);
+            color: #ccc;
+            border: 1px solid #333;
+        }
+        
+        .complexity-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #fff;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            color: #999;
+        }
+        
+        .algorithm-theory {
+            margin: 30px 0;
+            padding: 20px;
+            background: #1a1a1a;
+            border-radius: 10px;
+            box-shadow: inset 0 2px 5px rgba(255, 255, 255, 0.03);
+            border: 1px solid #333;
+        }
+        
+        .theory-point {
+            margin-bottom: 15px;
+            padding-left: 20px;
+            position: relative;
+            color: #ccc;
+        }
+        
+        .theory-point::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #888;
+            font-size: 1.2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .complexity {
+                flex-direction: column;
+            }
+            
+            .complexity-item {
+                margin: 10px 0;
+            }
+            
+            .array-container {
+                justify-content: center;
+            }
+            
+            .stack-item {
+                width: 90%;
+                margin-left: 10%;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .array-element {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+        }
+        
+        .highlight {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        
+        .theory-section {
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Merge Sort Algorithm Visualization</h1>
+            <p class="subtitle">Understanding the Divide and Conquer Approach with Recursion</p>
+            <div class="array-display">
+                <div class="array-element">9</div>
+                <div class="array-element">3</div>
+                <div class="array-element">7</div>
+                <div class="array-element">5</div>
+                <div class="array-element">6</div>
+                <div class="array-element">4</div>
+                <div class="array-element">8</div>
+                <div class="array-element">2</div>
+            </div>
+        </header>
+        
+        <div class="content">
+            <div class="panel">
+                <h2>Understanding Merge Sort</h2>
+                
+                <div class="theory-section">
+                    <h3>What is Merge Sort?</h3>
+                    <div class="theory-point">Merge Sort is a classic <span class="highlight">divide-and-conquer</span> sorting algorithm that works by recursively dividing the input array into smaller subarrays, sorting those subarrays, and then merging them back together to produce the sorted array.</div>
+                    
+                    <h3>How It Works</h3>
+                    <div class="theory-point"><span class="highlight">Divide</span>: Split the array into two halves repeatedly until each subarray has only one element</div>
+                    <div class="theory-point"><span class="highlight">Conquer</span>: Sort each single-element subarray (trivially sorted)</div>
+                    <div class="theory-point"><span class="highlight">Combine</span>: Merge the sorted subarrays back together to produce the final sorted array</div>
+                    
+                    <h3>Key Characteristics</h3>
+                    <div class="theory-point"><span class="highlight">Stable</span>: Maintains the relative order of equal elements</div>
+                    <div class="theory-point"><span class="highlight">Not In-place</span>: Requires additional memory proportional to the input size</div>
+                    <div class="theory-point"><span class="highlight">Efficient</span>: Guaranteed O(n log n) time complexity in all cases</div>
+                </div>
+                
+                <h2>Recursion Tree with Function Parameters</h2>
+                <div class="tree">
+mergesort(a, 0, 7) mid = (0+7)/2 = 3
+├─mergesort(a, 0, 3) mid = (0+3)/2 = 1
+│ ├─mergesort(a, 0, 1) mid = (0+1)/2 = 0
+│ │ ├─mergesort(a, 0, 0) → base case (l >= r)
+│ │ ├─mergesort(a, 1, 1) → base case (l >= r)
+│ │ └─merge(a, 0, 0, 1)
+│ └─mergesort(a, 2, 3) mid = (2+3)/2 = 2
+│   ├─mergesort(a, 2, 2) → base case (l >= r)
+│   ├─mergesort(a, 3, 3) → base case (l >= r)
+│   └─merge(a, 2, 2, 3)
+└─mergesort(a, 4, 7) mid = (4+7)/2 = 5
+  ├─mergesort(a, 4, 5) mid = (4+5)/2 = 4
+  │ ├─mergesort(a, 4, 4) → base case (l >= r)
+  │ ├─mergesort(a, 5, 5) → base case (l >= r)
+  │ └─merge(a, 4, 4, 5)
+  └─mergesort(a, 6, 7) mid = (6+7)/2 = 6
+    ├─mergesort(a, 6, 6) → base case (l >= r)
+    ├─mergesort(a, 7, 7) → base case (l >= r)
+    └─merge(a, 6, 6, 7)
+                </div>
+                
+                <div class="complexity">
+                    <div class="complexity-item">
+                        <div>Time Complexity</div>
+                        <div class="complexity-value">O(n log n)</div>
+                        <div>Best, Average & Worst Case</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div>Space Complexity</div>
+                        <div class="complexity-value">O(n)</div>
+                        <div>Auxiliary Space</div>
+                    </div>
+                </div>
+                
+                <div class="theory-section">
+                    <h3>Time Complexity Analysis</h3>
+                    <div class="theory-point">The algorithm divides the array into two halves at each level, leading to <span class="highlight">log n</span> levels of recursion</div>
+                    <div class="theory-point">At each level, the merge operation takes <span class="highlight">O(n</span>) time</div>
+                    <div class="theory-point">Overall time complexity is <span class="highlight">O(n log n)</span> for all cases (best, average, worst)</div>
+                    
+                    <h3>Space Complexity Analysis</h3>
+                    <div class="theory-point">Merge sort requires <span class="highlight">O(n)</span> additional space for temporary arrays during the merge process</div>
+                    <div class="theory-point">The recursion stack requires <span class="highlight">O(log n)</span> space, but the dominant factor is the temporary arrays</div>
+                    <div class="theory-point">This makes merge sort <span class="highlight">not an in-place</span> sorting algorithm</div>
+                </div>
+                
+                <h2>Merge Process</h2>
+                <div class="merge-step">
+                    <div class="merge-header">merge(a, 0, 0, 1) - Merging indices [0,0] and [1,1]</div>
+                    <div class="array-container">
+                        <div class="array">
+                            <div class="array-element-sm">9</div>
+                        </div>
+                        <div class="arrow">+</div>
+                        <div class="array">
+                            <div class="array-element-sm">3</div>
+                        </div>
+                        <div class="arrow">→</div>
+                        <div class="array">
+                            <div class="array-element-sm">3</div>
+                            <div class="array-element-sm">9</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="merge-step">
+                    <div class="merge-header">merge(a, 2, 2, 3) - Merging indices [2,2] and [3,3]</div>
+                    <div class="array-container">
+                        <div class="array">
+                            <div class="array-element-sm">7</div>
+                        </div>
+                        <div class="arrow">+</div>
+                        <div class="array">
+                            <div class="array-element-sm">5</div>
+                        </div>
+                        <div class="arrow">→</div>
+                        <div class="array">
+                            <div class="array-element-sm">5</div>
+                            <div class="array-element-sm">7</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="merge-step">
+                    <div class="merge-header">merge(a, 0, 1, 3) - Merging indices [0,1] and [2,3]</div>
+                    <div class="array-container">
+                        <div class="array">
+                            <div class="array-element-sm">3</div>
+                            <div class="array-element-sm">9</div>
+                        </div>
+                        <div class="arrow">+</div>
+                        <div class="array">
+                            <div class="array-element-sm">5</div>
+                            <div class="array-element-sm">7</div>
+                        </div>
+                        <div class="arrow">→</div>
+                        <div class="array">
+                            <div class="array-element-sm">3</div>
+                            <div class="array-element-sm">5</div>
+                            <div class="array-element-sm">7</div>
+                            <div class="array-element-sm">9</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="merge-step">
+                    <div class="merge-header">merge(a, 4, 4, 5) - Merging indices [4,4] and [5,5]</div>
+                    <div class="array-container">
+                        <div class="array">
+                            <div class="array-element-sm">6</div>
+                        </div>
+                        <div class="arrow">+</div>
+                        <div class="array">
+                            <div class="array-element-sm">4</div>
+                        </div>
+                        <div class="arrow">→</div>
+                        <div class="array">
+                            <div class="array-element-sm">4</div>
+                            <div class="array-element-sm">6</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="merge-step">
+                    <div class="merge-header">merge(a, 6, 6, 7) - Merging indices [6,6] and [7,7]</div>
+                    <div class="array-container">
+                        <div class="array">
+                            <div class="array-element-sm">8</div>
+                        </div>
+                        <div class="arrow">+</div>
+                        <div class="array">
+                            <div class="array-element-sm">2</div>
+                        </div>
+                        <div class="arrow">→</div>
+                        <div class="array">
+                            <div class="array-element-sm">2</div>
+                            <div class="array-element-sm">8</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="merge-step">
+                    <div class="merge-header">merge(a, 4, 5, 7) - Merging indices [4,5] and [6,7]</div>
+                    <div class="array-container">
+                        <div class="array">
+                            <div class="array-element-sm">4</div>
+                            <div class="array-element-sm">6</div>
+                        </div>
+                        <div class="arrow">+</div>
+                        <div class="array">
+                            <div class="array-element-sm">2</div>
+                            <div class="array-element-sm">8</div>
+                        </div>
+                        <div class="arrow">→</div>
+                        <div class="array">
+                            <div class="array-element-sm">2</div>
+                            <div class="array-element-sm">4</div>
+                            <div class="array-element-sm">6</div>
+                            <div class="array-element-sm">8</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="merge-step">
+                    <div class="merge-header">merge(a, 0, 3, 7) - Merging indices [0,3] and [4,7]</div>
+                    <div class="array-container">
+                        <div class="array">
+                            <div class="array-element-sm">3</div>
+                            <div class="array-element-sm">5</div>
+                            <div class="array-element-sm">7</div>
+                            <div class="array-element-sm">9</div>
+                        </div>
+                        <div class="arrow">+</div>
+                        <div class="array">
+                            <div class="array-element-sm">2</div>
+                            <div class="array-element-sm">4</div>
+                            <div class="array-element-sm">6</div>
+                            <div class="array-element-sm">8</div>
+                        </div>
+                        <div class="arrow">→</div>
+                        <div class="array">
+                            <div class="array-element-sm">2</div>
+                            <div class="array-element-sm">3</div>
+                            <div class="array-element-sm">4</div>
+                            <div class="array-element-sm">5</div>
+                            <div class="array-element-sm">6</div>
+                            <div class="array-element-sm">7</div>
+                            <div class="array-element-sm">8</div>
+                            <div class="array-element-sm">9</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="panel">
+                <h2>Code Implementation</h2>
+                
+                <div class="theory-section">
+                    <h3>How the Algorithm Works in Code</h3>
+                    <div class="theory-point">The <span class="highlight">mergesort</span> function recursively divides the array until it reaches subarrays of size 1</div>
+                    <div class="theory-point">The <span class="highlight">merge</span> function combines two sorted subarrays into a single sorted array</div>
+                    <div class="theory-point">Temporary arrays are used to store values during the merging process</div>
+                </div>
+                
+                <div class="code-block">
+                    <pre>#include &lt;iostream&gt;
+using namespace std;
+int count = 0;
+
+void merge(int a[], int l, int mid, int r) {
+    int n1 = mid - l + 1;
+    int n2 = r - mid;
+    int L[n1], R[n2];
+    
+    for (int i = 0; i < n1; i++) {
+        L[i] = a[l + i];
+    }
+    for (int j = 0; j < n2; j++) {
+        R[j] = a[mid + 1 + j];
+    }
+    
+    int i = 0, j = 0, k = l;
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j]) {
+            a[k++] = L[i++];
+        } else {
+            a[k++] = R[j++];
+        }
+    }
+    
+    while (i < n1) {
+        a[k++] = L[i++];
+    }
+    while (j < n2) {
+        a[k++] = R[j++];
+    }
+    count++;
+}
+
+void mergesort(int a[], int l, int r) {
+    if (l < r) {
+        int mid = (l + r) / 2;
+        mergesort(a, l, mid);
+        mergesort(a, mid + 1, r);
+        merge(a, l, mid, r);
+    }
+}
+
+int main() {
+    int a[] = {9, 3, 7, 5, 6, 4, 8, 2};
+    mergesort(a, 0, 7);
+    
+    for (int i = 0; i < 8; i++) {
+        cout << a[i] << " ";
+    }
+    cout << "\n" << count << endl;
+    return 0;
+}</pre>
+                </div>
+                
+                <div class="complexity">
+                    <div class="complexity-item">
+                        <div>Merge Count</div>
+                        <div class="complexity-value">7</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div>Array Size</div>
+                        <div class="complexity-value">8</div>
+                    </div>
+                    <div class="complexity-item">
+                        <div>Recursion Depth</div>
+                        <div class="complexity-value">3</div>
+                    </div>
+                </div>
+                
+                <h2>Execution Context</h2>
+                
+                <div class="theory-section">
+                    <h3>Understanding the Call Stack</h3>
+                    <div class="theory-point">Each recursive call to <span class="highlight">mergesort</span> creates a new stack frame</div>
+                    <div class="theory-point">The call stack shows the current state of execution at each recursive level</div>
+                    <div class="theory-point">The depth of recursion is logarithmic relative to the input size</div>
+                </div>
+                
+                <div class="call-stack-container">
+                    <h3>Call Stack Visualization</h3>
+                    <div class="call-stack">
+                        <div class="stack-title">Function Call Stack:</div>
+                        <div class="stack-item stack-depth-0">mergesort(a, 0, 7) - mid=3</div>
+                        <div class="stack-item stack-depth-1">mergesort(a, 0, 3) - mid=1</div>
+                        <div class="stack-item stack-depth-2">mergesort(a, 0, 1) - mid=0</div>
+                        <div class="stack-item stack-depth-3">mergesort(a, 0, 0) → returns (base case)</div>
+                        <div class="stack-item stack-depth-3">mergesort(a, 1, 1) → returns (base case)</div>
+                        <div class="stack-item stack-depth-3">merge(a, 0, 0, 1) → [3,9]</div>
+                        <div class="stack-item stack-depth-2">mergesort(a, 0, 1) → returns</div>
+                        <div class="stack-item stack-depth-2">mergesort(a, 2, 3) - mid=2</div>
+                        <div class="stack-item stack-depth-3">mergesort(a, 2, 2) → returns (base case)</div>
+                        <div class="stack-item stack-depth-3">mergesort(a, 3, 3) → returns (base case)</div>
+                        <div class="stack-item stack-depth-3">merge(a, 2, 2, 3) → [5,7]</div>
+                        <div class="stack-item stack-depth-2">mergesort(a, 2, 3) → returns</div>
+                        <div class="stack-item stack-depth-2">merge(a, 0, 1, 3) → [3,5,7,9]</div>
+                        <div class="stack-item stack-depth-1">mergesort(a, 0, 3) → returns</div>
+                        <div class="stack-item stack-depth-1">mergesort(a, 4, 7) - mid=5</div>
+                        <div class="stack-item stack-depth-2">mergesort(a, 4, 5) - mid=4</div>
+                        <div class="stack-item stack-depth-3">mergesort(a, 4, 4) → returns (base case)</div>
+                        <div class="stack-item stack-depth-3">mergesort(a, 5, 5) → returns (base case)</div>
+                        <div class="stack-item stack-depth-3">merge(a, 4, 4, 5) → [4,6]</div>
+                        <div class="stack-item stack-depth-2">mergesort(a, 4, 5) → returns</div>
+                        <div class="stack-item stack-depth-2">mergesort(a, 6, 7) - mid=6</div>
+                        <div class="stack-item stack-depth-3">mergesort(a, 6, 6) → returns (base case)</div>
+                        <div class="stack-item stack-depth-3">mergesort(a, 7, 7) → returns (base case)</div>
+                        <div class="stack-item stack-depth-3">merge(a, 6, 6, 7) → [2,8]</div>
+                        <div class="stack-item stack-depth-2">mergesort(a, 6, 7) → returns</div>
+                        <div class="stack-item stack-depth-2">merge(a, 4, 5, 7) → [2,4,6,8]</div>
+                        <div class="stack-item stack-depth-1">mergesort(a, 4, 7) → returns</div>
+                        <div class="stack-item stack-depth-1">merge(a, 0, 3, 7) → [2,3,4,5,6,7,8,9]</div>
+                        <div class="stack-item stack-depth-0">mergesort(a, 0, 7) → returns</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Merge Sort Visualization | Understanding Divide and Conquer Algorithms</p>
+        </div>
+    </div>
+
+    <script>
+        // Simple animation for the call stack
+        document.addEventListener('DOMContentLoaded', function() {
+            const stackItems = document.querySelectorAll('.stack-item');
+            let delay = 0;
+            
+            stackItems.forEach(item => {
+                setTimeout(() => {
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateX(0)';
+                }, delay);
+                delay += 100;
+            });
+            
+            // Set initial state for animation
+            stackItems.forEach(item => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateX(-20px)';
+                item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            });
+            
+            // Add hover effect to array elements
+            const arrayElements = document.querySelectorAll('.array-element, .array-element-sm');
+            arrayElements.forEach(el => {
+                el.addEventListener('mouseover', () => {
+                    el.style.backgroundColor = '#333';
+                    el.style.boxShadow = '0 3px 8px rgba(255, 255, 255, 0.1)';
+                });
+                el.addEventListener('mouseout', () => {
+                    el.style.backgroundColor = '#222';
+                    el.style.boxShadow = '0 1px 3px rgba(255, 255, 255, 0.05)';
+                });
+            });
+        });
+        
+        // Scroll effect for background
+        window.addEventListener('scroll', function() {
+            const scrollPosition = window.scrollY;
+            const documentHeight = document.body.clientHeight - window.innerHeight;
+            const scrollPercent = scrollPosition / documentHeight;
+            
+            // Calculate new background based on scroll position (black to gray)
+            const colorValue = Math.min(100, Math.floor(scrollPercent * 100));
+            document.body.style.backgroundColor = `rgb(${colorValue}, ${colorValue}, ${colorValue})`;
+        });
+    </script>
+</body>
+</html>

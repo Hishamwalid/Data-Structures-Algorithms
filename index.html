@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algorithm Visualization Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+        }
+        
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        .search-box {
+            margin: 20px auto;
+            max-width: 500px;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .search-box input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .algorithms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+        
+        .algorithm-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .algorithm-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .card-header {
+            padding: 20px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        .card-header i {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .card-header h3 {
+            font-size: 1.5rem;
+        }
+        
+        .card-content {
+            padding: 20px;
+        }
+        
+        .card-content p {
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        .card-button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-align: center;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+        
+        .card-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .featured {
+            border: 2px solid #888;
+            position: relative;
+        }
+        
+        .featured-badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #888;
+            color: #000;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 20px;
+            opacity: 0.7;
+        }
+        
+        @media (max-width: 768px) {
+            .algorithms-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Algorithm Visualization Hub</h1>
+            <p>Explore, learn and visualize how different algorithms work with interactive demonstrations</p>
+        </header>
+        
+        <div class="search-box">
+            <input type="text" placeholder="Search algorithms...">
+        </div>
+        
+        <div class="algorithms-grid">
+            <div class="algorithm-card">
+                <div class="card-header">
+                    <i class="fas fa-sort-amount-down"></i>
+                    <h3>Merge Sort</h3>
+                </div>
+                <div class="card-content">
+                    <p>Efficient, stable, comparison-based, divide and conquer sorting algorithm with O(n log n) time complexity.</p>
+                    <a href="merge_sort.html" class="card-button">Visualize Merge Sort</a>
+                </div>
+            </div>
+            
+            <div class="algorithm-card">
+                <div class="card-header">
+                    <i class="fas fa-code-branch"></i>
+                    <h3>2-Way Merge Sort</h3>
+                </div>
+                <div class="card-content">
+                    <p>A variation of merge sort that divides the list into two equal parts, recursively sorts them, and then merges.</p>
+                    <a href="#" class="card-button">Visualize 2-Way Merge Sort</a>
+                </div>
+            </div>
+            
+            <div class="algorithm-card">
+                <div class="card-header">
+                    <i class="fas fa-sort-numeric-down"></i>
+                    <h3>Selection Sort</h3>
+                </div>
+                <div class="card-content">
+                    <p>Simple comparison-based algorithm that divides the input list into a sorted and an unsorted region.</p>
+                    <a href="#" class="card-button">Coming Soon</a>
+                </div>
+            </div>
+            
+            <div class="algorithm-card">
+                <div class="card-header">
+                    <i class="fas fa-sort-amount-down-alt"></i>
+                    <h3>Insertion Sort</h3>
+                </div>
+                <div class="card-content">
+                    <p>Builds the final sorted array one item at a time with O(n²) time complexity.</p>
+                    <a href="#" class="card-button">Coming Soon</a>
+                </div>
+            </div>
+            
+            <div class="algorithm-card">
+                <div class="card-header">
+                    <i class="fas fa-bars"></i>
+                    <h3>Bubble Sort</h3>
+                </div>
+                <div class="card-content">
+                    <p>Simple sorting algorithm that repeatedly steps through the list, compares adjacent elements and swaps them.</p>
+                    <a href="#" class="card-button">Coming Soon</a>
+                </div>
+            </div>
+            
+            <div class="algorithm-card featured">
+                <div class="featured-badge">FEATURED</div>
+                <div class="card-header">
+                    <i class="fas fa-project-diagram"></i>
+                    <h3>Quick Sort</h3>
+                </div>
+                <div class="card-content">
+                    <p>Efficient divide-and-conquer algorithm that selects a 'pivot' element and partitions the array around it.</p>
+                    <a href="#" class="card-button">Coming Soon</a>
+                </div>
+            </div>
+            
+            <div class="algorithm-card">
+                <div class="card-header">
+                    <i class="fas fa-binary"></i>
+                    <h3>Binary Search</h3>
+                </div>
+                <div class="card-content">
+                    <p>Search algorithm that finds the position of a target value within a sorted array.</p>
+                    <a href="#" class="card-button">Coming Soon</a>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>DSA</p>
+        </footer>
+    </div>
+
+    <script>
+        // Simple search functionality
+        const searchInput = document.querySelector('.search-box input');
+        const algorithmCards = document.querySelectorAll('.algorithm-card');
+        
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            
+            algorithmCards.forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                const description = card.querySelector('p').textContent.toLowerCase();
+                
+                if (title.includes(searchTerm) || description.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // Monochrome scroll effect
+        window.addEventListener('scroll', function() {
+            const scrollPosition = window.scrollY;
+            const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercentage = scrollPosition / documentHeight;
+            
+            // Calculate background color (black to white)
+            const colorValue = Math.min(255, Math.floor(scrollPercentage * 255));
+            document.body.style.backgroundColor = `rgb(${colorValue}, ${colorValue}, ${colorValue})`;
+            
+            // Adjust text color for better contrast
+            if (colorValue > 127) {
+                document.body.style.color = '#000';
+            } else {
+                document.body.style.color = '#fff';
+            }
+        });
+    </script>
+</body>
+</html>
