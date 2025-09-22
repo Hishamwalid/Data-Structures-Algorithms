@@ -458,12 +458,12 @@
                 <div class="tree">
 mergesort(a, 0, 7) mid = (0+7)/2 = 3
 ├─mergesort(a, 0, 3) mid = (0+3)/2 = 1
-│ ├─mergesort(a, 极 0, 1) mid = (0+1)/2 = 0
+│ ├─mergesort(a, 0, 1) mid = (0+1)/2 = 0
 │ │ ├─mergesort(a, 0, 0) → base case (l >= r)
 │ │ ├─mergesort(a, 1, 1) → base case (l >= r)
 │ │ └─merge(a, 0, 0, 1)
 │ └─mergesort(a, 2, 3) mid = (2+3)/2 = 2
-│   ├─merges极(a, 2, 2) → base case (l >= r)
+│   ├─mergesort(a, 2, 2) → base case (l >= r)
 │   ├─mergesort(a, 3, 3) → base case (l >= r)
 │   └─merge(a, 2, 2, 3)
 └─mergesort(a, 4, 7) mid = (4+7)/2 = 5
@@ -831,3 +831,4 @@ int main() {
     </script>
 </body>
 </html>
+
